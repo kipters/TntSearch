@@ -1,0 +1,87 @@
+﻿<local:ItemListPageBase
+    x:Class="TntSearch.Uwp.Views.ItemListPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TntSearch.Uwp.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
+    xmlns:vm="using:TntSearch.Core.ViewModels"
+    xmlns:tk="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core" xmlns:helpers="using:TntSearch.Uwp.Helpers"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance vm:ItemListViewModel}">
+
+    <Page.Resources>
+        <DataTemplate x:Key="TntItemTemplate">
+            <StackPanel Margin="0,6">
+                <tk:MarkdownTextBlock 
+                    Text="{Binding Title}" 
+                    Background="Transparent" 
+                    TextWrapping="NoWrap"
+                    IsTextSelectionEnabled="False"
+                    />
+                <TextBlock 
+                    Text="{Binding Description}"
+                    Style="{StaticResource CaptionTextBlockStyle}" 
+                    MaxLines="1" 
+                    TextTrimming="WordEllipsis" 
+                    />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="TerminatorTemplate">
+            <Border Height="0" />
+        </DataTemplate>
+        <helpers:ItemListTemplateSelector 
+            x:Key="ItemListTemplateSelector" 
+            Normal="{StaticResource TntItemTemplate}"
+            Terminator="{StaticResource TerminatorTemplate}"
+            />
+    </Page.Resources>
+
+    <RelativePanel>
+        <Border 
+            x:Name="TitleBorder"
+            Background="Green"
+            Margin="0,0,0,12"
+            RelativePanel.AlignTopWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"
+            RelativePanel.AlignLeftWithPanel="True">
+        </Border>
+        <Button
+            x:Name="SettingsButton"
+            Margin="12,0"
+            Command="{x:Bind ViewModel.ShowSettingsCommand}"
+            RelativePanel.AlignLeftWithPanel="True" 
+            RelativePanel.Below="TitleBorder">
+            <SymbolIcon Symbol="Setting" />
+        </Button>
+        <winui:SplitButton
+            Margin="12,0"
+            x:Name="CategorySplitButton" 
+            Content="Category" 
+            RelativePanel.AlignRightWithPanel="True" 
+            RelativePanel.AlignTopWith="SettingsButton"
+            />
+        <AutoSuggestBox
+            Margin="12"
+            Text="{x:Bind ViewModel.SearchTerm, Mode=TwoWay}"
+            x:Name="SearchBox"
+            RelativePanel.AlignLeftWithPanel="True" 
+            RelativePanel.Below="CategorySplitButton" 
+            RelativePanel.AlignRightWithPanel="True" 
+            QueryIcon="Find" 
+            />
+        <ListView
+            ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
+            SelectionMode="Single"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"
+            RelativePanel.Below="SearchBox"
+            IsItemClickEnabled="True"
+            ItemClick="OnItemClick"
+            ItemTemplateSelector="{StaticResource ItemListTemplateSelector}">
+        </ListView>
+    </RelativePanel>
+</local:ItemListPageBase>

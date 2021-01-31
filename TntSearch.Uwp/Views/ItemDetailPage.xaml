@@ -1,0 +1,35 @@
+﻿<local:ItemDetailPageBase
+    x:Class="TntSearch.Uwp.Views.ItemDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TntSearch.Uwp.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="OnLoaded"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <RelativePanel Margin="12">
+        <TextBlock 
+            x:Name="TitleBlock" 
+            Style="{StaticResource TitleTextBlockStyle}"
+            Text="{Binding Title}" />
+        <TextBlock 
+            x:Name="DescriptionBlock" 
+            Text="{Binding Description}" 
+            RelativePanel.Below="TitleBlock" />
+        <TextBlock 
+            x:Name="MagnetCaption"
+            Margin="0,48,0,0"
+            Text="Magnet" 
+            Style="{StaticResource CaptionTextBlockStyle}" 
+            RelativePanel.Below="DescriptionBlock"/>
+        <HyperlinkButton 
+            x:Name="MagnetLink" 
+            NavigateUri="{Binding Magnet}" 
+            Content="{Binding Magnet}" 
+            Command="{Binding CopyMagnetCommand}"
+            RelativePanel.Below="MagnetCaption" 
+            />
+    </RelativePanel>
+</local:ItemDetailPageBase>

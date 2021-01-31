@@ -54,7 +54,7 @@ namespace TntSearch.Core.ViewModels
                     {
                         return;
                     }
-                    //_lastId = 0;
+                    _lastId = 0;
                     //Items.Clear();
                     //_resetTimer.Change(300, Timeout.Infinite);
                     Items = _incrementalFactory.GetCollection(OnLoadMoreItems);

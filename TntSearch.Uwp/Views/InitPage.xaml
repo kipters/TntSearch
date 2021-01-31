@@ -1,0 +1,52 @@
+﻿<local:InitPageBase
+    x:Class="TntSearch.Uwp.Views.InitPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TntSearch.Uwp.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:converters="using:TntSearch.Uwp.Converters"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <converters:InverseBoolToVisibilityConverter x:Key="InverseVisibilityConverter" />
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock 
+            Grid.Row="1" 
+            VerticalAlignment="Top" 
+            HorizontalAlignment="Center" 
+            Text="{x:Bind ViewModel.Message, Mode=OneWay}"
+            />
+        <ProgressRing
+            Grid.Row="1"
+            Width="75"
+            Height="75"
+            IsActive="{x:Bind ViewModel.InitializePackTask.IsNotCompleted, Mode=OneWay}"
+            />
+        <Button 
+            Grid.Row="1" 
+            VerticalAlignment="Bottom" 
+            HorizontalAlignment="Center" 
+            Content="Pick file" 
+            Visibility="{x:Bind ViewModel.InitializePackTask.IsSuccessfullyCompleted, Mode=OneWay, Converter={StaticResource InverseVisibilityConverter}}"
+            Command="{x:Bind ViewModel.PickDataPackCommand}" 
+            />
+        <Button 
+            Grid.Row="1" 
+            VerticalAlignment="Bottom" 
+            HorizontalAlignment="Center" 
+            Content="Next" 
+            Command="{x:Bind ViewModel.NavigateToMainViewModelCommand}" 
+            Visibility="{x:Bind ViewModel.InitializePackTask.IsSuccessfullyCompleted, Mode=OneWay}"
+            Style="{StaticResource AccentButtonStyle}"
+            />
+    </Grid>
+</local:InitPageBase>

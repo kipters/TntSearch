@@ -11,11 +11,12 @@ namespace TntSearch.Core.ViewModels
         private SearchItem? _parameter;
         private readonly IDataRepository _repo;
 
-        public ItemDetailViewModel(IDataRepository repo, IClipboardService clipboard)
+        public ItemDetailViewModel(IDataRepository repo, IClipboardService clipboard, ISocialService social)
         {
             _repo = repo;
 
             CopyMagnetCommand = new MvxCommand(() => clipboard.SetText(Magnet));
+            ShareMagnetCommand = new MvxAsyncCommand(async () => await social.ShareUrl(Title, Magnet));
         }
 
         public override void Prepare(SearchItem item)
@@ -43,5 +44,6 @@ namespace TntSearch.Core.ViewModels
         public string Magnet { get; private set; } = string.Empty;
 
         public IMvxCommand CopyMagnetCommand { get; }
+        public IMvxCommand ShareMagnetCommand { get; }
     }
 }

@@ -22,13 +22,12 @@ namespace TntSearch.Core.ViewModels
             _dataPackManager = dataPackManager;
             InitializePackTask = MvxNotifyTask.Create(Task.FromException(new Exception()));
             PickDataPackCommand = new MvxAsyncCommand(PickFileAndInitPackAsync, () => _canExecuteInit);
-            NavigateToMainViewModelCommand = new MvxAsyncCommand(async () => await navigationService.Navigate<MainViewModel>());
+            NavigateToMainViewModelCommand = new MvxAsyncCommand(async () =>
+            {
+                await navigationService.Close(this);
+                await navigationService.Navigate<MainViewModel>();
+            });
             _message = "Select a data pack file";
-        }
-
-        public override Task Initialize()
-        {
-            return base.Initialize();
         }
 
         private async Task PickFileAndInitPackAsync()
@@ -79,7 +78,7 @@ namespace TntSearch.Core.ViewModels
         public MvxAsyncCommand PickDataPackCommand { get; }
         public MvxAsyncCommand NavigateToMainViewModelCommand { get; }
 
-        private MvxNotifyTask _initializePackTask;
+        private MvxNotifyTask _initializePackTask = null!;
         public MvxNotifyTask InitializePackTask { get => _initializePackTask; private set => SetProperty(ref _initializePackTask, value); }
 
         private string _message;
